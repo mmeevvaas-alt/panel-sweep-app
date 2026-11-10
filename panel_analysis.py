@@ -117,7 +117,8 @@ def parse_settings(text: str) -> tuple[dict, dict, str | None]:
         parsed["wl_start"], parsed["wl_stop"], parsed["wl_step"] = (
             float(m.group(1)), float(m.group(2)), float(m.group(3)))
 
-    sine = s.get("sine", "")
+    m = re.search(r"^.*\bsine\b.*$", text, re.I | re.M)   # e.g. "sine 2 Vpp, DC offsets [...] V"
+    sine = m.group(0) if m else s.get("sine", "")
     m = re.search(r"([\d.]+)\s*Vpp", sine)
     if m:
         parsed["sine_vpp"] = float(m.group(1))
